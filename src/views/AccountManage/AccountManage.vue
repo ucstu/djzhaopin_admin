@@ -1,132 +1,121 @@
 <template>
   <div class="app-container">
-    <el-card
-      class="operate-container"
-      shadow="never"
-      :body-style="{
+    <el-card class="operate-container" shadow="never" :body-style="{
         width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
-      }"
-    >
+      }">
       <div class="left">
-        <el-icon><List /></el-icon>
+        <el-icon>
+          <List />
+        </el-icon>
         <span style="margin: 0 5px">数据列表</span>
       </div>
-      <el-button
-        size="small"
-        class="btn-add"
-        @click="handleAdd"
-        style="margin-left: 20px"
-        >添加</el-button
-      >
+      <el-button size="small" class="btn-add" @click="handleAdd" style="margin-left: 20px">添加</el-button>
     </el-card>
     <div class="table-container">
       <el-table :data="Accounts" table-layout="fixed">
-        <el-table-column
-          label="账号ID"
-          width="380"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column label="账号ID" width="380" align="center" header-align="center">
           <template #default="scope">
             <span>{{ scope.row.accountInformationId }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="角色"
-          width="180"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column label="角色" width="180" align="center" header-align="center">
           <template #default="scope">
             <span>{{ AccountType[scope.row.accountType] }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="用户名"
-          width="180"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column label="用户名" width="180" align="center" header-align="center">
           <template #default="scope">
             <span>{{ scope.row.userName }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          label="注册时间"
-          width="180"
-          align="center"
-          header-align="center"
-        >
+        <el-table-column label="注册时间" width="180" align="center" header-align="center">
           <template #default="scope">
             <span>{{ scope.row.createdAt }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          align="center"
-          header-align="center"
-          min-width="300"
-        >
+        <el-table-column fixed="right" label="操作" align="center" header-align="center" min-width="300">
           <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)"
-              >编辑</el-button
-            >
-            <el-button size="small" @click="handleView(scope.$index, scope.row)"
-              >查看</el-button
-            >
-            <el-button
-              size="small"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
+            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+            <el-button size="small" @click="handleView(scope.$index, scope.row)">查看</el-button>
+            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
-
-    <el-dialog
-      :title="isEdit ? '编辑用户' : '添加用户'"
-      v-model="dialogTableVisible"
-      width="40%"
-    >
+    <vxe-table border show-overflow :column-config="{resizable: true}" :data="Accounts"
+      :edit-config="{trigger: 'dblclick', mode: 'cell'}">
+      <vxe-column type="seq" width="60"></vxe-column>
+      <vxe-column field="name" title="Name" :edit-render="{autofocus: '.vxe-input--inner'}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.name" type="text"></vxe-input>
+        </template>
+      </vxe-column>
+      <vxe-column field="role" title="Role" :edit-render="{}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.role" type="text" placeholder="请输入昵称"></vxe-input>
+        </template>
+      </vxe-column>
+      <vxe-column field="sex" title="Sex" :edit-render="{}">
+        <template #default="{ row }">
+          <span>{{ formatSex(row.sex) }}</span>
+        </template>
+        <template #edit="{ row }">
+          <vxe-select v-model="row.sex" transfer>
+            <vxe-option v-for="item in sexList1" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
+          </vxe-select>
+        </template>
+      </vxe-column>
+      <vxe-column field="sex2" title="多选下拉" :edit-render="{}">
+        <template #default="{ row }">
+          <span>{{ formatMultiSex(row.sex2) }}</span>
+        </template>
+        <template #edit="{ row }">
+          <vxe-select v-model="row.sex2" multiple transfer>
+            <vxe-option v-for="item in sexList1" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
+          </vxe-select>
+        </template>
+      </vxe-column>
+      <vxe-column field="num6" title="Number" :edit-render="{}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.num6" type="number" placeholder="请输入数值"></vxe-input>
+        </template>
+      </vxe-column>
+      <vxe-column field="date12" title="Date" :edit-render="{}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.date12" type="date" placeholder="请选择日期" transfer></vxe-input>
+        </template>
+      </vxe-column>
+      <vxe-column field="date13" title="Week" :edit-render="{}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.date13" type="week" placeholder="请选择日期" transfer></vxe-input>
+        </template>
+      </vxe-column>
+      <vxe-column field="address" title="Address" :edit-render="{}">
+        <template #edit="{ row }">
+          <vxe-input v-model="row.address" type="text"></vxe-input>
+        </template>
+      </vxe-column>
+    </vxe-table>
+    <el-dialog :title="isEdit ? '编辑用户' : '添加用户'" v-model="dialogTableVisible" width="40%">
       <el-form :model="admin" ref="adminForm" label-width="150px" size="small">
         <el-form-item label="用户名：">
           <el-input v-model="admin.userName" style="width: 250px"></el-input>
         </el-form-item>
         <el-form-item label="角色：">
           <el-select v-model="admin.accountType" placeholder="请选择账号角色">
-            <el-option
-              v-for="(item, index) in AccountType"
-              :key="item"
-              :label="item"
-              :value="index"
-            />
+            <el-option v-for="(item, index) in AccountType" :key="item" :label="item" :value="index" />
           </el-select>
         </el-form-item>
         <el-form-item label="密码：">
-          <el-input
-            v-model="admin.password"
-            type="password"
-            style="width: 250px"
-          ></el-input>
+          <el-input v-model="admin.password" type="password" style="width: 250px"></el-input>
         </el-form-item>
         <el-form-item label="验证码：">
-          <el-input
-            style="width: 300px"
-            v-model.number="admin.verificationCode"
-            placeholder="输入验证码"
-          >
+          <el-input style="width: 300px" v-model.number="admin.verificationCode" placeholder="输入验证码">
             <template #append>
-              <el-button
-                v-if="!btn"
-                @click="postverificationCode(admin.userName)"
-                >{{ vcode }}</el-button
-              >
+              <el-button v-if="!btn" @click="postverificationCode(admin.userName)">{{ vcode }}</el-button>
               <el-button v-if="btn" @click="message">{{ vcode }}</el-button>
             </template>
           </el-input>
@@ -134,26 +123,14 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="dialogTableVisible = false" size="small"
-            >取 消</el-button
-          >
-          <el-button
-            type="primary"
-            @click="handleDialogConfirm(adminForm)"
-            size="small"
-            >确 定</el-button
-          >
+          <el-button @click="dialogTableVisible = false" size="small">取 消</el-button>
+          <el-button type="primary" @click="handleDialogConfirm(adminForm)" size="small">确 定</el-button>
         </span>
       </template>
     </el-dialog>
   </div>
-  <main-bottom
-    :value="value"
-    :total="total"
-    :page-num="pageNum"
-    @current-change="handleChangePage"
-    @size-change="handleSizeChange"
-  />
+  <main-bottom :value="value" :total="total" :page-num="pageNum" @current-change="handleChangePage"
+    @size-change="handleSizeChange" />
 </template>
 
 <script lang="ts" setup>

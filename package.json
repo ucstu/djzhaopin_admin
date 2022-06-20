@@ -17,8 +17,7 @@
     "vue": "^3.2.25",
     "vue-router": "^4.0.16",
     "vue-use": "^0.2.0",
-    "vxe-table": "^4.2.8",
-    "vxe-table-plugin-element": "^3.0.5",
+    "vxe-table": "^4.2.3",
     "xe-utils": "^3.5.4"
   },
   "devDependencies": {

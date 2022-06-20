@@ -4,8 +4,6 @@ import { createPinia } from "pinia";
 import piniaPersist from "pinia-plugin-persist";
 import { createApp } from "vue";
 import VXETable from "vxe-table";
-import VXETablePluginElement from "vxe-table-plugin-element";
-import "vxe-table-plugin-element/dist/style.css";
 import "vxe-table/lib/style.css";
 import "xe-utils";
 import App from "./App.vue";
@@ -22,8 +20,6 @@ function useTable(app: any) {
 
 const pinia = createPinia();
 pinia.use(piniaPersist);
-
-VXETable.use(VXETablePluginElement);
 
 createApp(App)
   .use(pinia)

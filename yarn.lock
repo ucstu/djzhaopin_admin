@@ -1008,15 +1008,10 @@ vuex@^3.0.1:
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
   integrity sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==
 
-vxe-table-plugin-element@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/vxe-table-plugin-element/-/vxe-table-plugin-element-3.0.5.tgz#7194fc2375f65d6fab9e2afbe108c50acc6b0ddd"
-  integrity sha512-keZJIEraJix+ZqRJY0ud5usTPU6KfcizkTLJzUZsYjms6A+HwOZ24FDczGcEvO6hbPofeROWySlf9K7Dg687ew==
-
-vxe-table@^4.2.8:
-  version "4.2.8"
-  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-4.2.8.tgz#4cc591d2abee43a4c4cef7c4a5a3dbaaa6a8439c"
-  integrity sha512-t0IwE0XHZ+FKrE0x3daqm48OJprXEzDFfZWaqX64W/32n4LcCjywL9cMtL0WwplL3IHpDoe9JfKOp9d+jYwrUA==
+vxe-table@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/vxe-table/-/vxe-table-4.2.3.tgz#48e8cc26e5492f35522e218f064760e1a02d60a0"
+  integrity sha512-sbW9yZ763/ArOpJXRyBJwPKShU0za4lq5WJYdzF+O73yqdhmSUJ/cFuf3E/JJ/DxD/rk3BdV7/jDaFR6YBDyIQ==
 
 webpack-sources@^3.2.3:
   version "3.2.3"
