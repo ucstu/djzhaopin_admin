@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.4",
+    "@vueuse/core": "^8.7.4",
     "axios": "^0.27.2",
     "element-plus": "^2.2.6",
     "pinia": "^2.0.14",
@@ -16,7 +17,6 @@
     "qs": "^6.10.5",
     "vue": "^3.2.25",
     "vue-router": "^4.0.16",
-    "vue-use": "^0.2.0",
     "vxe-table": "^4.2.3",
     "xe-utils": "^3.5.4"
   },

@@ -74,8 +74,7 @@
           <span>超级管理员</span>
         </div>
       </el-header>
-
-      <el-main class="main">
+      <el-main>
         <router-view v-slot="{ Component, route }" v-if="showRouter">
           <keep-alive>
             <component

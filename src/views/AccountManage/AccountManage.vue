@@ -1,265 +1,182 @@
 <template>
-  <div class="app-container">
-    <el-card class="operate-container" shadow="never" :body-style="{
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-      }">
-      <div class="left">
-        <el-icon>
-          <List />
-        </el-icon>
-        <span style="margin: 0 5px">数据列表</span>
-      </div>
-      <el-button size="small" class="btn-add" @click="handleAdd" style="margin-left: 20px">添加</el-button>
-    </el-card>
-    <div class="table-container">
-      <el-table :data="Accounts" table-layout="fixed">
-        <el-table-column label="账号ID" width="380" align="center" header-align="center">
-          <template #default="scope">
-            <span>{{ scope.row.accountInformationId }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="角色" width="180" align="center" header-align="center">
-          <template #default="scope">
-            <span>{{ AccountType[scope.row.accountType] }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="用户名" width="180" align="center" header-align="center">
-          <template #default="scope">
-            <span>{{ scope.row.userName }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="注册时间" width="180" align="center" header-align="center">
-          <template #default="scope">
-            <span>{{ scope.row.createdAt }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" align="center" header-align="center" min-width="300">
-          <template #default="scope">
-            <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="small" @click="handleView(scope.$index, scope.row)">查看</el-button>
-            <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <vxe-table border show-overflow :column-config="{resizable: true}" :data="Accounts"
-      :edit-config="{trigger: 'dblclick', mode: 'cell'}">
+  <div class="flex-col justify-between" style="height: 100%">
+    <vxe-table
+      border
+      align="center"
+      show-overflow
+      :column-config="{ resizable: true }"
+      :data="accountInformations"
+      :edit-config="{ trigger: 'dblclick', mode: 'row' }"
+    >
       <vxe-column type="seq" width="60"></vxe-column>
-      <vxe-column field="name" title="Name" :edit-render="{autofocus: '.vxe-input--inner'}">
-        <template #edit="{ row }">
-          <vxe-input v-model="row.name" type="text"></vxe-input>
-        </template>
-      </vxe-column>
-      <vxe-column field="role" title="Role" :edit-render="{}">
-        <template #edit="{ row }">
-          <vxe-input v-model="row.role" type="text" placeholder="请输入昵称"></vxe-input>
-        </template>
-      </vxe-column>
-      <vxe-column field="sex" title="Sex" :edit-render="{}">
+      <vxe-column field="accountInformationId" title="账号ID">
         <template #default="{ row }">
-          <span>{{ formatSex(row.sex) }}</span>
-        </template>
-        <template #edit="{ row }">
-          <vxe-select v-model="row.sex" transfer>
-            <vxe-option v-for="item in sexList1" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
-          </vxe-select>
+          <span>{{ row.accountInformationId }}</span>
         </template>
       </vxe-column>
-      <vxe-column field="sex2" title="多选下拉" :edit-render="{}">
+      <vxe-column field="accountType" title="账号类型">
         <template #default="{ row }">
-          <span>{{ formatMultiSex(row.sex2) }}</span>
-        </template>
-        <template #edit="{ row }">
-          <vxe-select v-model="row.sex2" multiple transfer>
-            <vxe-option v-for="item in sexList1" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
-          </vxe-select>
+          <span>{{ accountTypeMap[row.accountType] }}</span>
         </template>
       </vxe-column>
-      <vxe-column field="num6" title="Number" :edit-render="{}">
-        <template #edit="{ row }">
-          <vxe-input v-model="row.num6" type="number" placeholder="请输入数值"></vxe-input>
+      <vxe-column field="createdAt" title="创建时间">
+        <template #default="{ row }">
+          <span>{{ row.createdAt }}</span>
         </template>
       </vxe-column>
-      <vxe-column field="date12" title="Date" :edit-render="{}">
-        <template #edit="{ row }">
-          <vxe-input v-model="row.date12" type="date" placeholder="请选择日期" transfer></vxe-input>
+      <vxe-column field="updatedAt" title="更新时间">
+        <template #default="{ row }">
+          <span>{{ row.updatedAt }}</span>
         </template>
       </vxe-column>
-      <vxe-column field="date13" title="Week" :edit-render="{}">
+      <vxe-column field="userName" title="用户名" :edit-render="{}">
         <template #edit="{ row }">
-          <vxe-input v-model="row.date13" type="week" placeholder="请选择日期" transfer></vxe-input>
+          <vxe-input
+            v-model="row.userName"
+            type="text"
+            placeholder="请输入用户名"
+            @blur="handleAccountInformationChange(row)"
+            transfer
+          ></vxe-input>
         </template>
       </vxe-column>
-      <vxe-column field="address" title="Address" :edit-render="{}">
-        <template #edit="{ row }">
-          <vxe-input v-model="row.address" type="text"></vxe-input>
+      <vxe-column title="操作">
+        <template #default="{ row }">
+          <vxe-button
+            content="删除账户"
+            type="primary"
+            @click="handleDeleteAccountInformation(row)"
+          />
         </template>
       </vxe-column>
     </vxe-table>
-    <el-dialog :title="isEdit ? '编辑用户' : '添加用户'" v-model="dialogTableVisible" width="40%">
-      <el-form :model="admin" ref="adminForm" label-width="150px" size="small">
-        <el-form-item label="用户名：">
-          <el-input v-model="admin.userName" style="width: 250px"></el-input>
-        </el-form-item>
-        <el-form-item label="角色：">
-          <el-select v-model="admin.accountType" placeholder="请选择账号角色">
-            <el-option v-for="(item, index) in AccountType" :key="item" :label="item" :value="index" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="密码：">
-          <el-input v-model="admin.password" type="password" style="width: 250px"></el-input>
-        </el-form-item>
-        <el-form-item label="验证码：">
-          <el-input style="width: 300px" v-model.number="admin.verificationCode" placeholder="输入验证码">
-            <template #append>
-              <el-button v-if="!btn" @click="postverificationCode(admin.userName)">{{ vcode }}</el-button>
-              <el-button v-if="btn" @click="message">{{ vcode }}</el-button>
-            </template>
-          </el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogTableVisible = false" size="small">取 消</el-button>
-          <el-button type="primary" @click="handleDialogConfirm(adminForm)" size="small">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
+    <div class="flex-row justify-between items-center">
+      <vxe-button
+        content="刷新数据"
+        :loading="loading"
+        round
+        @click="getAccounts(currentPage, pageSize)"
+      />
+      <vxe-pager
+        background
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :total="totalResult"
+        :page-sizes="[3, 5, 10, 20, 30, 50, 100]"
+        :layouts="[
+          'PrevJump',
+          'PrevPage',
+          'JumpNumber',
+          'NextPage',
+          'NextJump',
+          'Sizes',
+          'FullJump',
+          'Total',
+        ]"
+      >
+      </vxe-pager>
+    </div>
   </div>
-  <main-bottom :value="value" :total="total" :page-num="pageNum" @current-change="handleChangePage"
-    @size-change="handleSizeChange" />
 </template>
 
 <script lang="ts" setup>
-import {
-  getAdminAccounts,
-  getVerificationCode,
-  postAccountInfos,
-} from "@/services/services";
+import { getAdminAccounts, putAdminAccountsP0 } from "@/services/services";
 import type { AccountInformation } from "@/services/types";
 import { failResponseHandler } from "@/utils/handler";
-import { encrypt } from "@/utils/useMd5";
-import { List } from "@element-plus/icons-vue";
-import { ElMessage, FormInstance } from "element-plus";
-import { computed, ref } from "vue";
-let total = $ref(0);
-let Accounts = $ref<Array<AccountInformation>>();
-const AccountType = ["管理员", "普通用户", "HR"];
-const adminForm = ref<FormInstance>();
-const value = computed(() => {
-  return total > 1 ? false : true;
-});
-let pageNum = $ref(1);
-getAdminAccounts().then(
-  ({
-    data: {
-      body: { accountInformations, totalCount },
-    },
-  }) => {
-    Accounts = accountInformations;
-    total = totalCount;
+import { ElMessage, ElMessageBox } from "element-plus";
+import { watch } from "vue";
+
+let accountInformations = $ref<Array<AccountInformation>>();
+const accountTypeMap = ["管理员", "普通用户", "HR用户"];
+
+let totalResult = $ref(0);
+let currentPage = $ref(1);
+let pageSize = $ref(5);
+let loading = $ref(false);
+
+const handleAccountInformationChange = (
+  accountInformation: AccountInformation
+) => {
+  putAdminAccountsP0(
+    accountInformation.accountInformationId,
+    accountInformation
+  )
+    .then(() => {
+      ElMessage.success("修改成功");
+    })
+    .catch(failResponseHandler);
+};
+
+const handleDeleteAccountInformation = (
+  accountInformation: AccountInformation
+) => {
+  ElMessageBox.confirm(
+    `确定删除账户 ${accountInformation.userName} 吗？`,
+    "删除账户",
+    {
+      type: "warning",
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      beforeClose: (action, instance, done) => {
+        if (action === "confirm") {
+          // getAdminAccounts(accountInformation)
+          //   .then(() => {
+          //     ElMessage.success("删除成功");
+          //     done();
+          //   })
+          //   .catch(failResponseHandler);
+          ElMessage.error("暂不允许删除账户");
+          done();
+        } else {
+          done();
+        }
+      },
+    }
+  );
+};
+
+const getAccounts = (currentPage: number, pageSize: number) => {
+  loading = true;
+  getAdminAccounts({
+    page: currentPage - 1,
+    size: pageSize,
+  })
+    .then(
+      ({
+        data: {
+          body: {
+            accountInformations: _accountInformations,
+            totalCount: _totalCount,
+          },
+        },
+      }) => {
+        accountInformations = _accountInformations;
+        totalResult = _totalCount;
+      }
+    )
+    .catch(failResponseHandler)
+    .finally(() => {
+      loading = false;
+    });
+};
+
+watch(
+  () => currentPage,
+  () => {
+    getAccounts(currentPage, pageSize);
   }
 );
-const handleChangePage = (currentPage: any) => {
-  pageNum = currentPage;
-  // getCompany(size, pageNum);
-};
-const handleDelete = () => {
-  ElMessage.error("暂未开放");
-};
-let size = $ref(10);
-const handleSizeChange = (val: number) => {
-  size = val;
-};
-interface AccountInfo {
-  accountType: "1" | "2";
-  userName: string;
-  password: string;
-  verificationCode: string;
-}
-let dialogTableVisible = ref(false);
-const btn = ref(false);
-const vcode = ref("获取验证码");
-const admin = $ref<AccountInfo>({} as AccountInfo);
-const isEdit = ref(false);
-const handleAdd = () => {
-  console.log(11);
-  dialogTableVisible.value = true;
-  console.log(dialogTableVisible);
-};
-const handleEdit = (index: number, row: AccountInformation) => {
-  console.log(12);
-};
-const handleView = (index: number, row: AccountInformation) => {
-  console.log(1);
-};
-const postverificationCode = (email: string) => {
-  if (email === "") {
-    ElMessage.warning("请输入正确用户名");
-    return;
-  } else {
-    getVerificationCode({ email })
-      .then(() => {
-        ElMessage.success("验证码已发送，请注意查收");
-      })
-      .catch(failResponseHandler);
-    btn.value = true;
-    let time = 60;
-    const timer = setInterval(() => {
-      time--;
-      vcode.value = `${time}s`;
-      if (time === 0) {
-        clearInterval(timer);
-        vcode.value = "获取验证码";
-        btn.value = false;
-      }
-    }, 1000);
-  }
-};
-const message = () => {
-  ElMessage.warning("您已经发送过验证码，请等待");
-};
-const handleDialogConfirm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate((valid) => {
-    if (valid) {
-      postAccountInfos({
-        accountType: admin.accountType,
-        userName: admin.userName,
-        password: encrypt(admin.password),
-        verificationCode: admin.verificationCode,
-      })
-        .then(() => {
-          ElMessage.success("注册成功");
-          dialogTableVisible.value = false;
-        })
-        .catch(failResponseHandler);
-    } else {
-      ElMessage.warning("请检查表单信息");
-      return false;
+watch(
+  () => pageSize,
+  () => {
+    if (pageSize * currentPage > totalResult) {
+      currentPage = Math.ceil(totalResult / pageSize);
     }
-  });
-};
+    getAccounts(currentPage, pageSize);
+  }
+);
+
+getAccounts(currentPage, pageSize);
 </script>
 
-<style lang="scss" scoped>
-.app-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 25px;
-  width: 95%;
-  .operate-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin: 50px 0;
-  }
-}
-.dialog-footer button:first-child {
-  margin-right: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

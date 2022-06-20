@@ -53,7 +53,7 @@ import {
   ProjectExperience,
   UserInformation,
   UserInspectionRecord,
-  WorkExperience,
+  WorkExperience
 } from "./types";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -864,7 +864,10 @@ export const getAdminAccountgroups = (
   configOverride?: AxiosRequestConfig
 ): Promise<
   SwaggerResponse<{
-    body: AccountGroup[];
+    body: {
+      totalCount: number;
+      accountGroups: AccountGroup[];
+    };
     message: string;
     status: number;
     timestamp: string;
@@ -922,7 +925,10 @@ export const getAdminAccounts = (
   configOverride?: AxiosRequestConfig
 ): Promise<
   SwaggerResponse<{
-    body: AccountInformation[];
+    body: {
+      totalCount: number;
+      accountInformations: AccountInformation[];
+    };
     message: string;
     status: number;
     timestamp: string;
