@@ -3,44 +3,47 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 
 const leftBarRouteList: RouteRecordRaw[] = [
   {
-    path: "/Manage",
     name: "Manage",
+    path: "/Manage",
+    meta: { requiresAuth: true },
     component: () => import("@/AppLayout.vue"),
     redirect: "/Manage/CompanyManage",
     children: [
       {
-        meta: { keepAlive: true },
         name: "CompanyManage",
         path: "CompanyManage",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () => import("@/views/CompanyManage/CompanyManage.vue"),
       },
       {
         name: "CompanyAttrDetail",
         path: "CompanyAttrDetail/:companyInformationId/:view?",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () => import("@/views/CompanyManage/CompanyAttrDetail.vue"),
       },
       {
         name: "PositionAttrDetail",
         path: "PositionAttrDetail/:positionInformationId/:companyId/:view?",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () =>
           import("@/views/PositionManage/PositionAttrDetail.vue"),
       },
       {
-        meta: { keepAlive: true },
         name: "PositionManage",
         path: "PositionManage",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () => import("@/views/PositionManage/PositionManage.vue"),
       },
       {
-        meta: { keepAlive: true },
         name: "AccountManage",
         path: "AccountManage",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () => import("@/views/AccountManage/AccountManage.vue"),
       },
       {
-        meta: { keepAlive: true },
         name: "AccountGroupManage",
         path: "AccountGroupManage",
+        meta: { keepAlive: true, requiresAuth: true },
         component: () =>
           import("@/views/AccountGroupManage/AccountGroupManage.vue"),
       },
@@ -56,8 +59,8 @@ const unAuthRouterList: RouteRecordRaw[] = [
   },
   {
     path: "/Login",
-    component: () => import("@/views/LoginPage/LoginPage.vue"),
     meta: { requiresAuth: false },
+    component: () => import("@/views/LoginPage/LoginPage.vue"),
   },
 ];
 
@@ -70,12 +73,10 @@ router.beforeEach(async (to, _, next) => {
   const store = useMainStore();
   if (store.jsonWebToken != null && store.accountInformation != null) {
     next();
+  } else if (!to.meta.requiresAuth) {
+    next();
   } else {
-    if (!to.meta.requiresAuth) {
-      next();
-    } else {
-      next("/Login");
-    }
+    next("/Login");
   }
 });
 

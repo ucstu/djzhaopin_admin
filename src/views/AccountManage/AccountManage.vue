@@ -188,14 +188,17 @@ getAdminAccounts().then(
 );
 const handleChangePage = (currentPage: any) => {
   pageNum = currentPage;
-  getCompany(size, pageNum);
+  // getCompany(size, pageNum);
+};
+const handleDelete = () => {
+  ElMessage.error("暂未开放");
 };
 let size = $ref(10);
 const handleSizeChange = (val: number) => {
   size = val;
 };
 interface AccountInfo {
-  accountType: number;
+  accountType: "1" | "2";
   userName: string;
   password: string;
   verificationCode: string;
@@ -209,6 +212,12 @@ const handleAdd = () => {
   console.log(11);
   dialogTableVisible.value = true;
   console.log(dialogTableVisible);
+};
+const handleEdit = (index: number, row: AccountInformation) => {
+  console.log(12);
+};
+const handleView = (index: number, row: AccountInformation) => {
+  console.log(1);
 };
 const postverificationCode = (email: string) => {
   if (email === "") {

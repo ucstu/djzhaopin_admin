@@ -398,13 +398,13 @@ const dialogFormVisible = ref(false);
 const dialogFormVisible1 = ref(false);
 const dialogFormVisible2 = ref(false);
 interface InterviewInfo {
-  illustrate: 1 | 2 | 3 | 4;
+  illustrate: "1" | "2" | "3" | "4";
 
-  situation: 1 | 2 | 3;
+  situation: "1" | "2" | "3";
 
-  time: 1 | 2;
+  time: "1" | "2";
 
-  wheel: 1 | 2 | 3 | 4;
+  wheel: "1" | "2" | "3" | "4";
 }
 const interviewInfo = ref<Array<string>>([]);
 const submitData = (data: Ref<{ tagName: string; checked: boolean }>) => {

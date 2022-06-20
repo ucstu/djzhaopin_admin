@@ -30,7 +30,7 @@ interface Address {
     latitude: number;
   };
 }
-const ActuAddress = $ref<Address>({});
+const ActuAddress = $ref<Address>({} as Address);
 const emit = defineEmits(["handlePlace"]);
 const map = shallowRef<AMap.Map>();
 const placeSearch = shallowRef();

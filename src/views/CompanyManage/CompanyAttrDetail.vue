@@ -61,20 +61,11 @@
           </div>
         </el-form-item>
         <el-form-item prop="workPlace">
-          <div class="map">
-            <div id="container"></div>
-            <el-scrollbar>
-              <ul>
-                <li
-                  v-for="address in aboutAddress"
-                  :key="address.id"
-                  @click="handleArea(address)"
-                >
-                  {{ address.name }}
-                </li>
-              </ul>
-            </el-scrollbar>
-          </div>
+          <Map
+            v-if="showMap"
+            @handle-place="handlePlace"
+            :form-company="companyForm.location"
+          />
         </el-form-item>
         <el-form-item label="公司规模" prop="scale">
           <el-select v-model="companyForm.scale" placeholder="请选择">
@@ -182,13 +173,11 @@ const submitData = (data: {
     companyForm.comprehensionName = data.data.value.fieldName;
   }
 };
+let showMap = $ref(false);
 onMounted(() => {
   if (route.params.view) {
     isEdit.value = false;
   }
-  // if (companyForm) {
-  //   companyForm.scale = "1";
-  // }
 });
 let companyForm = $ref<CompanyInformation>({} as CompanyInformation);
 interface CityInfo {
@@ -222,7 +211,10 @@ getCityInformations()
     });
   })
   .catch(failResponseHandler);
-
+const handlePlace = (val: any) => {
+  companyForm.address = val.address;
+  companyForm.location = val.location;
+};
 getCompanyInfosP0(route.params.companyInformationId.toString()).then(
   ({ data: { body } }) => {
     companyForm = body;

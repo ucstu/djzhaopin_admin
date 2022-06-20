@@ -24,7 +24,7 @@
     <div class="table-container">
       <el-table :data="AccountsGroup" table-layout="fixed">
         <el-table-column
-          label="账号组ID"
+          label="用户组ID"
           width="380"
           align="center"
           header-align="center"
@@ -34,13 +34,18 @@
           </template>
         </el-table-column>
         <el-table-column
-          label="账号组名称"
+          label="用户组名称"
           width="180"
           align="center"
           header-align="center"
         >
           <template #default="scope">
-            <span>{{ scope.row.groupName }}</span>
+            <span
+              v-if="acitveComponentId !== scope.row.componentId"
+              @click="inputClick(scope.row)"
+              >{{ scope.row.groupName }}</span
+            >
+            <el-input v-model="input" placeholder="Please input" />
           </template>
         </el-table-column>
         <el-table-column
@@ -70,6 +75,82 @@
           </template>
         </el-table-column>
       </el-table>
+      <vxe-table
+        border
+        show-overflow
+        :column-config="{ resizable: true }"
+        :data="AccountsGroup"
+        :edit-config="{ trigger: 'dblclick', mode: 'cell' }"
+      >
+        <vxe-column type="seq" width="60"></vxe-column>
+        <vxe-column
+          field="name"
+          title="Name"
+          :edit-render="{ autofocus: '.vxe-input--inner' }"
+        >
+          <template #edit="{ row }">
+            <vxe-input v-model="row.name" type="text"></vxe-input>
+          </template>
+        </vxe-column>
+        <vxe-column field="role" title="Role" :edit-render="{}">
+          <template #edit="{ row }">
+            <vxe-input
+              v-model="row.role"
+              type="text"
+              placeholder="请输入昵称"
+            ></vxe-input>
+          </template>
+        </vxe-column>
+        <vxe-column field="sex" title="Sex" :edit-render="{}">
+          <template #default="{ row }">
+            <span>{{ formatSex(row.sex) }}</span>
+          </template>
+          <template #edit="{ row }">
+            <vxe-select v-model="row.sex" transfer>
+              <vxe-option
+                v-for="item in sexList1"
+                :key="item.value"
+                :value="item.value"
+                :label="item.label"
+              ></vxe-option>
+            </vxe-select>
+          </template>
+        </vxe-column>
+        <vxe-column field="num6" title="Number" :edit-render="{}">
+          <template #edit="{ row }">
+            <vxe-input
+              v-model="row.num6"
+              type="number"
+              placeholder="请输入数值"
+            ></vxe-input>
+          </template>
+        </vxe-column>
+        <vxe-column field="date12" title="Date" :edit-render="{}">
+          <template #edit="{ row }">
+            <vxe-input
+              v-model="row.date12"
+              type="date"
+              placeholder="请选择日期"
+              transfer
+            ></vxe-input>
+          </template>
+        </vxe-column>
+        <vxe-column field="date13" title="Week" :edit-render="{}">
+          <template #edit="{ row }">
+            <vxe-input
+              v-model="row.date13"
+              type="week"
+              placeholder="请选择日期"
+              transfer
+            ></vxe-input>
+          </template>
+        </vxe-column>
+        <vxe-column field="address" title="Address" :edit-render="{}">
+          <template #edit="{ row }">
+            <vxe-input v-model="row.address" type="text"></vxe-input>
+          </template>
+        </vxe-column>
+      </vxe-table>
     </div>
 
     <el-dialog
@@ -150,9 +231,19 @@ getAdminAccountgroups().then(
     console.log(AccountsGroup);
   }
 );
+let acitveComponentId = ref("");
+const inputClick = (row: any) => {
+  //点击span，赋值激活的id
+  acitveComponentId.value = row.componentId;
+};
+const inputBlur = (row: any) => {
+  //输入框失去焦点，将激活的id清空
+  acitveComponentId.value = "";
+};
+
 const handleChangePage = (currentPage: any) => {
   pageNum = currentPage;
-  getCompany(size, pageNum);
+  // getCompany(size, pageNum);
 };
 const handleSizeChange = (val: number) => {
   size = val;
@@ -169,8 +260,11 @@ let dialogTableVisible = ref(false);
 //   },
 // ];
 
-const handleClick = () => {
+const handleEdit = (index: number, row: AccountGroup) => {
   console.log(12);
+};
+const handleView = (index: number, row: AccountGroup) => {
+  console.log(1);
 };
 const isEdit = ref(false);
 const handleAdd = () => {
