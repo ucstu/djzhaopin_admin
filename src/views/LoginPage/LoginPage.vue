@@ -70,6 +70,7 @@ import { getAxiosInstance } from "@/services/config";
 import { postAccountInfosLogin } from "@/services/services";
 import { useMainStore } from "@/stores/main";
 import { failResponseHandler } from "@/utils/handler";
+import { encrypt } from "@/utils/useMd5";
 const mainStore = useMainStore();
 
 const loginFormRef = $ref(null as unknown as HTMLFormElement);
@@ -114,8 +115,8 @@ const handleLogin = () => {
     if (valid) {
       loading = true;
       postAccountInfosLogin({
-        ...loginForm,
         userName: loginForm.username,
+        password: encrypt(loginForm.password),
       })
         .then(
           ({
