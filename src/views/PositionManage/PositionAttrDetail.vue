@@ -450,8 +450,6 @@ const cityChange = (val: Array<string>) => {
   jobTypeList.value.workCityName = val[1];
 };
 const aboutAddress = ref<any>([]);
-
-console.log(3333);
 getCompanyInfosP0PositionInfosP1(
   route.params.companyId.toString(),
   route.params.positionInformationId.toString()
@@ -511,22 +509,7 @@ const handleWorkTimeChange = (val: Array<string>) => {
   jobTypeList.value.workTime = startTime;
   jobTypeList.value.overTime = endTime;
 };
-const handleArea = (address: any) => {
-  jobTypeList.value.workAreaName = address.address;
-  let lnglat = {
-    longitude: address.location.lng,
-    latitude: address.location.lat,
-  };
-  jobTypeList.value.workingPlace = lnglat;
 
-  let markerLnglat = [address.location.lng, address.location.lat] as [
-    number,
-    number
-  ];
-  marker.value.setPosition(markerLnglat);
-  map.value?.add(marker.value);
-  map.value?.setCenter(markerLnglat);
-};
 const heightLightMap = ["团队和谐"];
 const publishPost = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -547,6 +530,7 @@ const publishPost = (formEl: FormInstance | undefined) => {
     }
   });
 };
+// 从头到尾创建一个数字数组，用于限制日期组件的范围
 const makeRange = (start: number, end: number) => {
   const result: number[] = [];
   for (let i = start; i <= end; i++) {

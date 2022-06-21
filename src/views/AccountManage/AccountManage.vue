@@ -93,7 +93,7 @@ let totalResult = $ref(0);
 let currentPage = $ref(1);
 let pageSize = $ref(5);
 let loading = $ref(false);
-
+// 当用户更改输入值时将调用的函数。
 const handleAccountInformationChange = (
   accountInformation: AccountInformation
 ) => {
@@ -107,6 +107,7 @@ const handleAccountInformationChange = (
     .catch(failResponseHandler);
 };
 
+// 当用户单击删除按钮时将调用的函数。
 const handleDeleteAccountInformation = (
   accountInformation: AccountInformation
 ) => {
@@ -166,6 +167,7 @@ watch(
     getAccounts(currentPage, pageSize);
   }
 );
+// 当 pageSize 发生变化时，如果 currentPage 过大，则设置为最大值。
 watch(
   () => pageSize,
   () => {

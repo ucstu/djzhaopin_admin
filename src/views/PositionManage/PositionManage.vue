@@ -99,6 +99,7 @@ interface PositionManages extends PositionInformation {
   CompanyId: string;
 }
 const VITE_CDN_URL = import.meta.env.VITE_CDN_URL as string;
+// 查看总页数来查看是否显示分页。
 const value = computed(() => {
   return total > 1 ? false : true;
 });

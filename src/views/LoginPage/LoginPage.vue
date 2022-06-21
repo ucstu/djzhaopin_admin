@@ -130,8 +130,6 @@ const handleLogin = () => {
             getAxiosInstance(undefined).defaults.headers.common[
               "Authorization"
             ] = `Bearer ${token}`;
-            console.log(accountInformation.accountType);
-
             if (accountInformation.accountType === (0 as unknown as "1")) {
               router.push({ name: "Manage" });
             } else {

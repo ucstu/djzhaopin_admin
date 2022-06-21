@@ -36,6 +36,7 @@ const map = shallowRef<AMap.Map>();
 const placeSearch = shallowRef();
 const marker = shallowRef();
 const aboutAddress = ref<any>([]);
+// 当用户单击列表中的地址时调用。
 const handleArea = (address: any) => {
   ActuAddress.address = address.name;
   let lnglat = {
@@ -65,6 +66,7 @@ onMounted(() => {
   map.value = new AMap.Map("container", {
     zoom: 13,
   });
+  // 加载页面时设置标记位置。
   if (props.formCompany.latitude !== null) {
     marker.value = new AMap.Marker({
       map: map.value,
@@ -76,6 +78,7 @@ onMounted(() => {
       props.formCompany.latitude,
     ]);
   }
+  // 高德地图插件。
   AMap.plugin(
     [
       "AMap.Geolocation",
@@ -86,6 +89,7 @@ onMounted(() => {
     ],
     function () {
       let citySearch = new AMap.CitySearch();
+      // 获取当地城市的功能。
       citySearch.getLocalCity(function (status, result) {
         if (typeof result != "string") {
           if (status === "complete") {
@@ -110,6 +114,7 @@ onMounted(() => {
           }
         }
       });
+      // 点击地图事件。
       map.value?.on("click", (e: any) => {
         if (!marker.value) {
           marker.value = new AMap.Marker({

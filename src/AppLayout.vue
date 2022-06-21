@@ -97,6 +97,7 @@
 <script lang="ts" setup>
 import { Message, Setting } from "@element-plus/icons-vue";
 import { nextTick, provide } from "vue";
+// 重新加载路由器视图的技巧。
 let showRouter = $ref(true);
 const reload = () => {
   showRouter = false;

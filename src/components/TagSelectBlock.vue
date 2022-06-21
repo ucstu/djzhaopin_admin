@@ -49,6 +49,7 @@ type CheckableTag = Ref<{
   checked: boolean;
 }>;
 
+// 创建一个新的对象数组，其标签名称与 props.tags 数组相同，但选中的属性设置为 false。
 const checkableTags = computed(() => {
   return props.tags.map((tag) => {
     return ref({
@@ -61,6 +62,7 @@ const checkedTags = computed(() =>
   checkableTags.value.filter((tag) => tag.value.checked)
 );
 let checkedTag = null as unknown as CheckableTag;
+// 当用户点击标签时调用将值传给父组件。
 const handleSelectTag = (checkableTag: CheckableTag) => {
   checkableTag.value.checked = !checkableTag.value.checked;
   if (props.multiple) {

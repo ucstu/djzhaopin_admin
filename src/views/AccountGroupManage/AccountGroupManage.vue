@@ -110,6 +110,7 @@ watch(
     getAccountGroups(currentPage, pageSize);
   }
 );
+// 当 pageSize 改变时，如果 currentPage 超出范围，就会改变到最后一页。
 watch(
   () => pageSize,
   () => {

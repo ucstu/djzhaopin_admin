@@ -9,8 +9,10 @@
 import { getAxiosInstance } from "./services/config";
 import { useMainStore } from "./stores/main";
 
+// 返回store存储的函数。
 const mainStore = useMainStore();
 
+// 这是一种为所有请求设置授权标头的方法。
 if (mainStore.jsonWebToken !== "") {
   getAxiosInstance(undefined).defaults.headers.common[
     "Authorization"
