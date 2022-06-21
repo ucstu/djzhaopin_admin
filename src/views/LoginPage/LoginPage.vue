@@ -71,6 +71,7 @@ import { postAccountInfosLogin } from "@/services/services";
 import { useMainStore } from "@/stores/main";
 import { failResponseHandler } from "@/utils/handler";
 import { encrypt } from "@/utils/useMd5";
+import { ElMessage } from "element-plus";
 const mainStore = useMainStore();
 
 const loginFormRef = $ref(null as unknown as HTMLFormElement);
@@ -129,7 +130,15 @@ const handleLogin = () => {
             getAxiosInstance(undefined).defaults.headers.common[
               "Authorization"
             ] = `Bearer ${token}`;
-            router.push({ name: "Manage" });
+            console.log(accountInformation.accountType);
+
+            if (accountInformation.accountType === (0 as unknown as "1")) {
+              router.push({ name: "Manage" });
+            } else {
+              ElMessage.error("当前账户非管理员账号");
+              loginForm.username = "";
+              loginForm.password = "";
+            }
           }
         )
         .catch(failResponseHandler)
