@@ -420,10 +420,16 @@ const submitDirection = (
     }>[][]
   >
 ) => {
-  directions.value = data.value.flat().map((item) => item.value.tagName);
+  directions.value = data.value.flat().map((item) => {
+    const tags = [];
+    if (item.value.checked) {
+      tags.push(item.value.tagName);
+    }
+    return tags;
+  });
 };
 const comfirmDirection = () => {
-  jobTypeList.value.directionTags = directions.value;
+  jobTypeList.value.directionTags = directions.value.flat();
   dialogFormVisible2.value = false;
 };
 const submitInterview = (data: {
