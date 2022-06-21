@@ -18,21 +18,21 @@ const leftBarRouteList: RouteRecordRaw[] = [
       {
         name: "CompanyAttrDetail",
         path: "CompanyAttrDetail/:companyInformationId/:view?",
-        meta: { keepAlive: true, requiresAuth: true },
+        meta: { keepAlive: false, requiresAuth: true },
         component: () => import("@/views/CompanyManage/CompanyAttrDetail.vue"),
-      },
-      {
-        name: "PositionAttrDetail",
-        path: "PositionAttrDetail/:positionInformationId/:companyId/:view?",
-        meta: { keepAlive: true, requiresAuth: true },
-        component: () =>
-          import("@/views/PositionManage/PositionAttrDetail.vue"),
       },
       {
         name: "PositionManage",
         path: "PositionManage",
         meta: { keepAlive: true, requiresAuth: true },
         component: () => import("@/views/PositionManage/PositionManage.vue"),
+      },
+      {
+        name: "PositionAttrDetail",
+        path: "PositionAttrDetail/:positionInformationId/:companyId/:view?",
+        meta: { keepAlive: false, requiresAuth: true },
+        component: () =>
+          import("@/views/PositionManage/PositionAttrDetail.vue"),
       },
       {
         name: "AccountManage",

@@ -315,7 +315,7 @@ import { failResponseHandler } from "@/utils/handler";
 import useTime from "@/utils/useTime";
 import { ElMessage, FormInstance } from "element-plus";
 import { storeToRefs } from "pinia";
-import { computed, onMounted, reactive, Ref, ref, shallowRef } from "vue";
+import { computed, reactive, Ref, ref, shallowRef } from "vue";
 import { useRoute } from "vue-router";
 import DirectionTagSelector from "./components/DirectionTagSelector.vue";
 import InterviewTagSelector from "./components/InterviewTagSelector.vue";
@@ -410,7 +410,7 @@ const interviewInfo = ref<Array<string>>([]);
 const submitData = (data: Ref<{ tagName: string; checked: boolean }>) => {
   jobTypeList.value.positionType = data.value.tagName;
 };
-const directions = ref<Array<string>>([]);
+const directions = ref<Array<Array<string>>>([[]]);
 
 const submitDirection = (
   data: Ref<
@@ -451,26 +451,24 @@ const cityChange = (val: Array<string>) => {
 };
 const aboutAddress = ref<any>([]);
 
-onMounted(() => {
-  if (route.params.companyId && route.params.positionInformationId) {
-    getCompanyInfosP0PositionInfosP1(
-      route.params.companyId.toString(),
-      route.params.positionInformationId.toString()
-    )
-      .then((res) => {
-        jobTypeList.value = res.data.body;
-        cityInfo.value = [
-          jobTypeList.value.workProvinceName,
-          jobTypeList.value.workCityName,
-        ];
-        showMap = true;
-      })
-      .catch(failResponseHandler);
-    if (route.params.view) {
-      isEdit.value = false;
-    }
-  }
-});
+console.log(3333);
+getCompanyInfosP0PositionInfosP1(
+  route.params.companyId.toString(),
+  route.params.positionInformationId.toString()
+)
+  .then((res) => {
+    console.log(4444);
+    jobTypeList.value = res.data.body;
+    cityInfo.value = [
+      jobTypeList.value.workProvinceName,
+      jobTypeList.value.workCityName,
+    ];
+    showMap = true;
+  })
+  .catch(failResponseHandler);
+if (route.params.view) {
+  isEdit.value = false;
+}
 
 const { directionTags } = storeToRefs(store);
 if (directionTags.value === null) {
