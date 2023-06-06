@@ -31,7 +31,7 @@
     "unplugin-auto-import": "^0.7.2",
     "unplugin-element-plus": "^0.4.0",
     "unplugin-vue-components": "^0.19.5",
-    "vite": "^2.9.13",
+    "vite": "^2.9.16",
     "vue-tsc": "^0.34.7"
   }
 }
